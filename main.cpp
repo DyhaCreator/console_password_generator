@@ -19,7 +19,14 @@ bool in(char a, std::string b){
 }
 
 bool in(std::string a, std::string b){
-
+    for(int i = 0; i < a.size(); i++){
+        for(int j = 0; j < b.size(); j++){
+            if(a[i] == b[j]){
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 int main(){
@@ -40,22 +47,45 @@ int main(){
     getline(std::cin, keys);
     std::string key_all = "";
     //generate password
-    if(in('n', keys))
+    int col_keys = 0;
+    if(in('n', keys)){
         key_all += key_num;
-    if(in('a', keys))
+        col_keys ++;
+    }
+    if(in('a', keys)){
         key_all += key_a;
-    if(in('A', keys))
+        col_keys ++;
+    }
+    if(in('A', keys)){
         key_all += key_A;
-    if(in('s', keys))
+        col_keys ++;
+    }
+    if(in('s', keys)){
         key_all += key_sym;
+        col_keys ++;
+    }
     std::cout << "Enter size of your password" << std::endl;
     int size;
     std::cin >> size;
-    std::cout << "GENERATE..." << std::endl;
-    std::string password = "";
-    for(int i = 0; i < size; i++){
-        password += key_all[random(0,key_all.size())];
+    if(size >= col_keys){
+        std::cout << "GENERATE..." << std::endl;
+        std::string password;
+        while(true){
+            password = "";
+            for(int i = 0; i < size; i++){
+                password += key_all[random(0,key_all.size())];
+            }
+            if(in(password, key_num) == in('n', keys) && 
+               in(password, key_a)   == in('a', keys) && 
+               in(password, key_A)   == in('A', keys) && 
+               in(password, key_sym) == in('s', keys)){
+                break;
+            }
+        }
+        std::cout << password << std::endl;
     }
-    std::cout << password << std::endl;
+    else{
+        std::cout << "this operation is unreal" << std::endl;
+    }
     return 0;
 }
